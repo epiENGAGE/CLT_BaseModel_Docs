@@ -1,4 +1,4 @@
-# MetroFluSim Mathematical Formulation
+# MetroFluSim Mathematical Formulation 
 
 <span style="display: none;">
 $\def\rateRtoS{\sigma^{R\rightarrow S}}$
@@ -46,6 +46,14 @@ $\def\numagegroups{\lvert \agegroups \rvert}$
 $\def\numriskgroups{\lvert \riskgroups \rvert}$
 $\def\poik{\text{POI}(k)}$
 $\def\poiell{\text{POI}(\ell)}$
+$\def\propdaytravelelltoell{p^{\ell \rightarrow \ell}}$
+$\def\propdaytravelktok{p^{k \rightarrow k}}$
+$\def\proptravelkprimetok{p^{k^\prime \rightarrow k}}$
+$\def\locationkprime{^{(k^\prime)}}$
+$\def\effectiveNlocagetime{\tilde{N}\locationell_{a}(t)}$
+$\def\poik{\text{POI}(k)}$
+$\def\proptravelktokprime{$p^{k \rightarrow k^\prime}}
+
 </span>
 
 The mathematical framework is inspired by the immunoSEIRS model of the Meyers Lab (see [Bi and Bandekar et al. 2023](https://www.researchgate.net/publication/375193467_Scenario_Projections_for_SARS-CoV-2_Influenza_and_RSV_Burden_in_the_US_2023-2024), [Bi et al. 2022](https://repositories.lib.utexas.edu/server/api/core/bitstreams/da7bb152-3343-4135-86e3-040546d6e5b5/content) and [Bouchnita et al. 2021](https://repositories.lib.utexas.edu/items/e8d50517-6e78-488b-8c95-8c1138d90c28) for some related recent publications).
@@ -153,33 +161,34 @@ This can loosely can be interpreted as exposure intensity: the (weighted) propor
 
 The decompositions model the following phenomenon:
 
-- $\lambda^{(\ell), \text{local}}\agetime$: rate at which individuals in location $\ell$ get exposed to infected people who live in location $\ell$ (this contact occurs in location $\ell$).
-- $\lambda^{(\ell), \text{visitors from } k}\agetime$: rate at which individuals in location $\ell$ get exposed to infected people who live in location $k$ but travel to location $\ell$ (this contact occurs in location $\ell$).
-- $\lambda^{(\ell), \text{residents traveling to } k}\agetime$: rate at which individuals in location $\ell$ get exposed to infected people who live in location $k$, due to individuals who live in location $\ell$ traveling to location $k$ (this contact occurs in location $k$).
+- $\lambda^{(\ell), \text{local}}\agetime$: rate at which individuals in location $\ell$ get exposed to infected people who live in location $\ell$ (these contacts occur in location $\ell$).
+- $\lambda^{(\ell), \text{visitors from } k}\agetime$: rate at which individuals in location $\ell$ get exposed to infected people who live in location $k$ but travel to location $\ell$ (these contacts occur in location $\ell$).
+- $\lambda^{(\ell), \text{residents traveling to } k}\agetime$: rate at which individuals in location $\ell$ get exposed to infected people while visting location $k$, which includes both people who live in location $k$ and people from all other locations visting location $k$ (these contacts occur in location $k$).
 
 Note that we assume this exposure intensity is the same for a given age group regardless of risk group, so we do not have the $r$-subscript here.
 
 Specifically, we have
 
 \begin{align*}
-\lambda^{(\ell), \text{local}}\agetime &= \psi_a \left(1 - m_a \sum_{k \in \mathcal L \setminus \{\ell\}} \proptravelelltok \right) \cdot \sum \limits_{a^\prime \in \agegroups} \phi\locationell_{a,a^\prime}(t) \frac{\texttt{I_weighted}\locationell_{a^\prime}(t)}{\sum_{r^\prime \in \riskgroups} \effectiveNlocageprimeriskprimetime} \tag{T2} \\[1.5em]
-\lambda^{(\ell), \text{visitors}}\agetime &= \sum_{k \in \mathcal L \setminus \{\ell\}} \underbrace{\left(\psi_a \cdot \propdaytravelktoell \cdot \sum\limits_{a^\prime \in \agegroups} m_{a^\prime}(t) \cdot \phi\locationell_{a, a^\prime}(t) \frac{\texttt{I_weighted}\locationk_{a^\prime}(t)}{\sum_{r^\prime \in \riskgroups} \effectiveNlocageprimeriskprimetime}\right)}_{\text{Each summand: } \lambda^{(\ell), \text{visitors from } k}\agetime} \tag{T3} \\[1.5em]
-\lambda_{a,r}^{(\ell), \text{residents traveling}}(t) &= \sum_{k \in \mathcal L \setminus \{\ell\}}  \underbrace{\left(\psi_a \cdot \proptravelelltok  \cdot m_a \cdot \sum\limits_{a^\prime \in \agegroups} \phi\locationell_{a, a^\prime}(t) \frac{\texttt{I_weighted}\locationk_{a^\prime}(t)}{\sum_{r^\prime \in \riskgroups} \tilde{N}^{(k)}_{a^\prime, r^\prime} (t)}\right)}_{\text{Each summand: } \lambda\agerisk^{(\ell), \text{residents traveling to } k}(t)} \tag{T4}
+\lambda^{(\ell), \text{local}}\agetime &= \psi_a \cdot \propdaytravelelltoell_a \cdot \sum \limits_{a^\prime \in \agegroups} \phi\locationell_{a,a^\prime}(t) \frac{\tilde{I}\locationell_{a^\prime}(t)}{\tilde{N}\locationell_{a^\prime}(t)} \propdaytravelelltoell_{a^\prime} \tag{T2} \\[1.5em]
+\lambda^{(\ell), \text{visitors}}\agetime &= \psi_a \cdot \propdaytravelelltoell_a \cdot \sum_{k \in \mathcal{L} \setminus \{\ell\}} \underbrace{\left( \sum\limits_{a^\prime \in \agegroups} \phi\locationell_{a, a^\prime}(t) \frac{\tilde{I}\locationk_{a^\prime}(t)}{\tilde{N}\locationell_{a^\prime}(t)} m_{a^\prime}(t) \cdot \propdaytravelktoell \right)}_{\text{Each summand: } \lambda^{(\ell), \text{visitors from } k}\agetime} \tag{T3} \\[1.5em]
+\lambda_{a,r}^{(\ell), \text{residents traveling}}(t) &= \psi_a \cdot \sum_{k \in \mathcal{L} \setminus \{\ell\}}   \left( \proptravelelltok  \cdot m_a \cdot \sum\limits_{a^\prime \in \agegroups} \phi\locationk_{a, a^\prime}(t) \right. \notag \\
+& \qquad \qquad \qquad \qquad \underbrace{ \left. \frac{ \tilde{I}\locationk_{a^\prime}(t) \cdot\propdaytravelktok_{a^\prime} + \sum_{k^\prime \in \mathcal{L} \setminus \{k\}} \tilde{I}\locationkprime_{a^\prime}(t) \cdot m_{a^\prime} \cdot \proptravelkprimetok }{\tilde{N}\locationk_{a^\prime}(t)}  \right)}_{\text{Each summand: } \lambda\agerisk^{(\ell), \text{residents traveling to } k}(t)}  \tag{T4}
 \end{align*}
 
 where
 
 \[
-\texttt{I_weighted}\locationell_{a^\prime}(t) := \sum_{r^\prime \in \riskgroups} \left[ISR\locationell\ageprimeriskprime(t) + ISH\locationell\ageprimeriskprime(t) + r_{IP} IP\locationell\ageprimeriskprime(t) + r_{IA} IA\locationell\ageprimeriskprime(t)\right] \tag{T5}
+\tilde{I}\locationell_{a}(t) := \sum_{r \in \riskgroups} \left[ISR\locationell\agerisk(t) + ISH\locationell\agerisk(t) + r_{IP} IP\locationell\agerisk(t) + r_{IA} IA\locationell\agerisk(t)\right] \tag{T5}
 \]
 
-and where
+and where $\effectiveNlocagetime$ defined below is the effective population in location $\ell \in \mathcal L$ and age group $a \in \agegroups$, at time $t$.
 
 \begin{align*}
-\effectiveNlocagerisktime &= \Nlocagerisk + m_a \cdot \sum_{k \in \mathcal L \setminus \{\ell\}} \propdaytravelktoell \cdot (N^{(k)}_{a, r} - HR^{(k)}_{a,r}(t) - HD^{(k)}_{a,r}(t)) \\ &\quad\quad\quad - m_a \cdot \sum_{k \in \mathcal L \setminus \{\ell\}} \proptravelelltok  \cdot (N\locagerisk - HR\locationell_{a,r}(t) - HD\locationell_{a,r}(t)) \tag{T6}
+\effectiveNlocagerisktime &= \Nlocagerisk + m_a \cdot \sum_{k \in \mathcal L \setminus \{\ell\}} \propdaytravelktoell \cdot (N^{(k)}_{a, r} - HR^{(k)}_{a,r}(t) - HD^{(k)}_{a,r}(t)) \\ &\quad\quad\quad - m_a \cdot \sum_{k \in \mathcal L \setminus \{\ell\}} \proptravelelltok  \cdot (N\locagerisk - HR\locationell_{a,r}(t) - HD\locationell_{a,r}(t)) \tag{T6} \\[1.5em]
+\effectiveNlocagetime &= \sum_{r \in \riskgroups} \tilde{N}^{(l)}_{a, r} (t) \tag{T7} 
 \end{align*}
 
-is the effective population in location $\ell \in \mathcal L$ and age-risk group $a \in \agegroups$, $r \in \riskgroups$ at time $t$.
 
 ### Contact matrix
 
@@ -201,21 +210,19 @@ We have
 
 - $\psi_a \in [0, 1]$: relative susceptibility of individuals in age group $a \in \agegroups$.
 - $m_a$: a positive scalar modifying travel intensity depending on age $a$.
-- $\propdaytravelktoell$: (on average) proportion of the day that a resident of $k$ spends traveling to location $\ell \in \mathcal L$.
+- $\propdaytravelktoell$: (on average) proportion of people time-weighted by proportion of the day that residents of $k$ spend traveling to location $\ell \in \mathcal L$.
 
 Note that the arrows in $\propdaytravelktoell$ correspond to direction of travel (e.g. $k \rightarrow \ell$ represents residents of location $k$ traveling to location $\ell$). The $\propdaytravelktoell$ values are calculated from mobility data, corresponding to
 
 \begin{align*}
-\bar{p}^{k \rightarrow \ell} &= \sum_{\poiell} c^{\poiell} \cdot v^{k \rightarrow \poiell} \tag{T7} \\[1.5em]
-\propdaytravelktoell &= \frac{\bar{p}^{k \rightarrow \ell}}{\sum_{\ell \in \mathcal L} \bar{p}^{k \rightarrow \ell}} \tag{T8}
+p^{k \rightarrow \ell} &= \sum_{\poiell} c^{\poiell} \cdot v^{k \rightarrow \poiell} \tag{T8} \\[1.5em]
+\propdaytravelelltoell_a &= 1 - m_a \sum_{k \in \mathcal{L} \setminus \{\ell\}} \proptravelelltok \tag{T9} 
 \end{align*}
 
 where
 
-- $c^{\poiell}$: average proportion of a day spent at $\poiell$.
+- $c^{\poiell}$: average proportion of a day spent at $\poiell$ on a given visit.
 - $v^{k \rightarrow \poiell}$: average number of visits per day per resident of $k$ to $\poiell$.
-
-Therefore the rows of the mobility matrix $p$ sum to 1: $\sum_{\ell \in \mathcal L} \propdaytravelktoell = 1$.
 
 ## Flu model: discretized stochastic implementation
 
@@ -291,4 +298,4 @@ We make the important note that the flu model's discretized stochastic implement
 
 In fact, in our code, we model $\boldsymbol{\mathcal C(t)}$ using an `Compartment` class, $\boldsymbol{\mathcal M}(t)$ using an `EpiMetric` class, and $\boldsymbol{\mathcal S(t)}$ using a `Schedule` class. We handle stochastic transitions using `TransitionVariable` and `TransitionVariableGroup` classes. These classes form some of the building blocks of the base model code. 
 
-> Updated 12/12/2025. Documentation written by LP and updated by Rémy Pasco, mathematical notation by LP (advised by Lauren Meyers and Dave Morton, edited by Susan Ptak, Meyers Lab, and Shiyuan Liang), travel model conceptualized by Rémy and Susan Ptak, immunity formulation by Anass Bouchnita.
+> Updated 2/19/2026. Documentation written by LP and updated by Rémy Pasco, mathematical notation by LP (advised by Lauren Meyers and Dave Morton, edited by Susan Ptak, Meyers Lab, and Shiyuan Liang), travel model conceptualized by Rémy and Susan Ptak, immunity formulation by Anass Bouchnita.

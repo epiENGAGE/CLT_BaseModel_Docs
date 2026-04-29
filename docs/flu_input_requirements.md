@@ -117,4 +117,4 @@ The field `timesteps_per_day` is the number of timesteps to take per day, which 
 
 See `SimulationSettings` docstring for other fields (those are not directly related to the mathematical formulation and only specify how simulation output is saved).
 
-> Updated 12/12/2025. Written by LP and updated by Rémy Pasco, edited by Susan Ptak.
+> Updated 2/19/2026. Written by LP and updated by Rémy Pasco, edited by Susan Ptak.
