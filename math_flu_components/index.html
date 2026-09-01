@@ -733,7 +733,7 @@
 <h3 id="population-level-immunity">Population-level immunity</h3>
 <p>For each <span class="arithmatex">\(\ell \in \mathcal L\)</span>, <span class="arithmatex">\(a \in \agegroups\)</span>, <span class="arithmatex">\(r \in \riskgroups\)</span>:</p>
 <div class="arithmatex">\[\begin{align*}
-\frac{dM\locationell\agerisktime}{dt} &amp;= \frac{\rateRtoS(t) R\locagerisktime}{N\locationell_{a, r}} \cdot (1 - oM\locationell\agerisktime - o_v MV\locationell\agerisktime) - wM\locationell\agerisktime \tag{M1} \\
+\frac{dM\locationell\agerisktime}{dt} &amp;= \frac{\rateRtoS(t) R\locagerisktime}{N\locationell_{a, r}} \cdot \left(1 - oM\locationell\agerisktime \right) - wM\locationell\agerisktime \tag{M1} \\
 \frac{dMV\locationell\agerisktime}{dt} &amp;= V\locationell\agerisk(t - \delta) - w_v MV\locationell\agerisktime \tag{M2}
 \end{align*}\]</div>
 <p>where</p>
@@ -746,33 +746,55 @@
 <li><span class="arithmatex">\(w_V\)</span>: rate at which vaccine-induced immunity wanes.</li>
 </ul>
 <h3 id="compartment-equations">Compartment equations</h3>
-<p>Note that the following are all <span class="arithmatex">\(\numagegroups \times \numriskgroups \times \lvert \mathcal I \rvert\)</span> matrices:</p>
+<p>Note that the following are all <span class="arithmatex">\(\numagegroups \times \numriskgroups\)</span> matrices:</p>
 <ul>
-<li><strong><span class="arithmatex">\(\boldsymbol{K}^I = [\boldsymbol{K}^I, \boldsymbol{K}^I_{V}]\)</span></strong>: reduction in infection risk from given immunity-inducing event.  </li>
-<li><strong><span class="arithmatex">\(\boldsymbol{K}^{H} = [\boldsymbol{K}^H, \boldsymbol{K}^H_{V}]\)</span></strong>: reduction in hospitalization risk from given immunity-inducing event.  </li>
-<li><strong><span class="arithmatex">\(\boldsymbol{K}^D = [\boldsymbol{K}^D, \boldsymbol{K}^D_{V}]\)</span></strong>: reduction in death risk from given immunity-inducing event.  </li>
-<li><strong><span class="arithmatex">\(\boldsymbol{M}\locationell = \boldsymbol{M}\locationell(t) = [\boldsymbol{M}\locationell(t), \boldsymbol{M}\locationell_{V}(t)]\)</span></strong>: location <span class="arithmatex">\(\ell \in \mathcal L\)</span> population-level immunity.  </li>
+<li><strong><span class="arithmatex">\(\boldsymbol{K}^I_{I}\)</span></strong>: infection-induced reduction in infection risk.  </li>
+<li><strong><span class="arithmatex">\(\boldsymbol{K}^H_{I}\)</span></strong>: infection-induced reduction in hospitalization risk.</li>
+<li><strong><span class="arithmatex">\(\boldsymbol{K}^D_{I}\)</span></strong>: infection-induced reduction in death risk.</li>
+<li><strong><span class="arithmatex">\(\boldsymbol{M}\locationell(t)\)</span></strong>: infection-induced population-level immunity in location <span class="arithmatex">\(\ell \in \mathcal L\)</span>.</li>
+<li><strong><span class="arithmatex">\(\boldsymbol{K}^I_{V}\)</span></strong>: vaccine-induced reduction in infection risk.</li>
+<li><strong><span class="arithmatex">\(\boldsymbol{K}^H_{V}\)</span></strong>: vaccine-induced reduction in hospitalization risk.</li>
+<li><strong><span class="arithmatex">\(\boldsymbol{K}^D_{V}\)</span></strong>: vaccine-induced reduction in death risk.</li>
+<li><strong><span class="arithmatex">\(\boldsymbol{M}\locationell_{V}(t)\)</span></strong>: vaccine-induced population-level immunity in location <span class="arithmatex">\(\ell \in \mathcal L\)</span>.</li>
 </ul>
-<p>To simplify notation, we have the following terms that characterize the effect of population-level immunities for a given subpopulation <span class="arithmatex">\(\ell\)</span>, age <span class="arithmatex">\(a\)</span>, and risk <span class="arithmatex">\(r\)</span>:</p>
+<p>To simplify notation, we have the following terms that characterize the effect of population-level infection-induced immunities for a given subpopulation <span class="arithmatex">\(\ell\)</span>, age <span class="arithmatex">\(a\)</span>, and risk <span class="arithmatex">\(r\)</span>:</p>
 <div class="arithmatex">\[\begin{align*}
-\LambdaIlocagerisktime &amp;= \left[\frac{\boldsymbol{K_{a,r}^{I}}}{\boldsymbol{1}_{\lvert \mathcal L \rvert \times 1} - \boldsymbol{K_{a,r}^{I}}}\right]^T \boldsymbol{M_{a,r}\locationell(t)} \tag{I1} \\
-\LambdaHlocagerisktime &amp;= \left[\frac{\boldsymbol{K_{a,r}^{H}}}{\boldsymbol{1}_{\lvert \mathcal L \rvert \times 1} - \boldsymbol{K_{a,r}^{H}}}\right]^T \boldsymbol{M_{a,r}\locationell(t)} \tag{I2} \\
-\LambdaDlocagerisktime &amp;= \left[\frac{\boldsymbol{K_{a,r}^{D}}}{\boldsymbol{1}_{\lvert \mathcal L \rvert \times 1} - \boldsymbol{K_{a,r}^{D}}}\right]^T \boldsymbol{M_{a,r}\locationell(t)} \tag{I3}
+\LambdaIlocagerisktime &amp;= \left[\frac{\boldsymbol{K_{I,a,r}^{I}}}{\boldsymbol{1}_{\lvert \mathcal L \rvert \times 1} - \boldsymbol{K_{I,a,r}^{I}}}\right]^T \boldsymbol{M_{a,r}\locationell(t)} \tag{I1} \\
+\LambdaHlocagerisktime &amp;= \left[\frac{\boldsymbol{K_{I,a,r}^{H}}}{\boldsymbol{1}_{\lvert \mathcal L \rvert \times 1} - \boldsymbol{K_{I,a,r}^{H}}}\right]^T \boldsymbol{M_{a,r}\locationell(t)} \tag{I2} \\
+\LambdaDlocagerisktime &amp;= \left[\frac{\boldsymbol{K_{I,a,r}^{D}}}{\boldsymbol{1}_{\lvert \mathcal L \rvert \times 1} - \boldsymbol{K_{I,a,r}^{D}}}\right]^T \boldsymbol{M_{a,r}\locationell(t)} \tag{I3}
 \end{align*}\]</div>
 <p>where <span class="arithmatex">\(\boldsymbol{1}_{\lvert \mathcal L \rvert \times 1}\)</span> is an <span class="arithmatex">\(\lvert \mathcal L \rvert \times 1\)</span> vector of <span class="arithmatex">\(1\)</span>'s and the fraction notation indicates element-wise division. </p>
+<p>The vaccine-induced reductions in risk <span class="arithmatex">\(\boldsymbol{K}^I_{V}\)</span>, <span class="arithmatex">\(\boldsymbol{K}^H_{V}\)</span>, and <span class="arithmatex">\(\boldsymbol{K}^D_{V}\)</span> are calculated based on reported vaccine effectiveness over an entire season to take into account waning:</p>
+<div class="arithmatex">\[\begin{align*}
+K^{X}_{V} &amp;= \frac{w_V \cdot T \cdot VE^{X}_{\text{season}}}{(1 - e^{-w_V}) \sum_{\tau=t_0}^{T-1} \frac{\sum_{u = t_0}^{\tau} p_{\text{prot}}(u) e^{-w_V (\tau - u)}}{\sum_{u = t_0}^{\tau} p_{\text{prot}}(u)}}
+\end{align*}\]</div>
+<p>where</p>
+<ul>
+<li><span class="arithmatex">\(X \in \{ I, H, D\}\)</span>.</li>
+<li><span class="arithmatex">\(VE^{X}_{\text{season}}\)</span>: reported seasonal average vaccine effectiveness.</li>
+<li><span class="arithmatex">\(T\)</span>: length of season in days.</li>
+<li><span class="arithmatex">\(\tau\)</span>: first day an individual is protected through vaccination (first vaccination date plus vaccine effectiveness delay <span class="arithmatex">\(\delta\)</span>).</li>
+<li><span class="arithmatex">\(p_{\text{prot}}(u)\)</span>: proportion of all vaccinated individuals who become protected on day <span class="arithmatex">\(u\)</span>.</li>
+</ul>
+<p>If vaccine effectiveness does not wane (<span class="arithmatex">\(w_V = 0\)</span>) we simply have <span class="arithmatex">\(K^{X}_{V} = VE^{X}_{\text{season}}\)</span>.<br />
+<br></p>
 <p>For each <span class="arithmatex">\(\ell \in \mathcal L\)</span>, <span class="arithmatex">\(a \in \agegroups\)</span>, <span class="arithmatex">\(r \in \riskgroups\)</span>, we have the following equations that characterize transitions between compartments:</p>
 <div class="arithmatex">\[\begin{align}
 \frac{dS\locagerisktime}{dt} &amp;= \underbrace{\rateRtoS R\locagerisktime}_{\text{$R$ to $S$}} 
--\underbrace{S\locagerisktime \frac{\beta\locationell(t) \cdot \totalforceofinfection}{\left(1 + \LambdaIlocagerisktime\right)}}_{\text{$S$ to $E$}} \tag{C1} \\[1.5em]
-\frac{dE\locagerisktime}{dt} &amp;= \underbrace{S\locagerisktime \frac{\beta\locationell(t) \cdot \totalforceofinfection}{\left(1 + \LambdaIlocagerisktime\right)}}_{\text{$S$ to $E$}} - \underbrace{\rateEtoI (1-\propIA) E\locagerisktime}_{\text{$E$ to $IP$}} - \underbrace{\rateEtoI \propIA E\locagerisktime}_{\text{$E$ to $IA$}} \tag{C2} \\[1.5em]
+-\underbrace{S\locagerisktime \frac{\beta\locationell(t)}{\left(1 + \LambdaIlocagerisktime\right)} (1 - K^I_{V,a,r} \cdot MV_{a,r}\locationell(t)) \cdot \totalforceofinfection}_{\text{$S$ to $E$}} \tag{C1} \\[1.5em]
+\frac{dE\locagerisktime}{dt} &amp;= \underbrace{S\locagerisktime \frac{\beta\locationell(t)}{\left(1 + \LambdaIlocagerisktime\right)} (1 - K^I_{V,a,r} \cdot MV_{a,r}\locationell(t)) \cdot \totalforceofinfection }_{\text{$S$ to $E$}} 
+\\ &amp; \qquad \qquad - \underbrace{\rateEtoI (1-\propIA) E\locagerisktime}_{\text{$E$ to $IP$}} - \underbrace{\rateEtoI \propIA E\locagerisktime}_{\text{$E$ to $IA$}} \tag{C2} \\[1.5em]
 \frac{dIP\locagerisktime}{dt} &amp;= \underbrace{\rateEtoI (1-\propIA) E\locagerisktime}_{\text{$E$ to $IP$}} - \underbrace{\rateIPtoIS IP\locagerisktime}_{\text{$IP$ to $ISR$ and $ISH$}} \tag{C3} \\[1.5em]
-\frac{dISR\locagerisktime}{dt} &amp;= \underbrace{\left(1-\frac{\pi^H}{1 + \LambdaHlocagerisktime}\right)\rateIPtoIS IP\locagerisktime}_{\text{$IP$ to $ISR$}} 
-- \underbrace{\rateISRtoR ISR\locagerisktime}_{\text{$ISR$ to $R$}} \tag{C4} \\[1.5em]
-\frac{dISH\locagerisktime}{dt} &amp;= \underbrace{\frac{\pi^H \rateIPtoIS IP\locagerisktime}{1 + \LambdaHlocagerisktime}}_{\text{$IP$ to $ISH$}} - \underbrace{\rateISHtoH ISH\locagerisktime}_{\text{$ISH$ to $HR$ and $HD$}} \tag{C5} \\[1.5em]
+\frac{dISR\locagerisktime}{dt} &amp;= \underbrace{\left(1-\frac{\pi^H }{1 + \LambdaHlocagerisktime}(1 - K^H_{V,a,r} \cdot MV_{a,r}\locationell(t)) \right)  \rateIPtoIS IP\locagerisktime}_{\text{$IP$ to $ISR$}}
+ \\ &amp; \qquad \qquad - \underbrace{\rateISRtoR ISR\locagerisktime}_{\text{$ISR$ to $R$}} \tag{C4} \\[1.5em]
+\frac{dISH\locagerisktime}{dt} &amp;= \underbrace{\frac{\pi^H }{1 + \LambdaHlocagerisktime} (1 - K^H_{V,a,r} \cdot MV_{a,r}\locationell(t)) \cdot \rateIPtoIS IP\locagerisktime}_{\text{$IP$ to $ISH$}}
+\\ &amp; \qquad \qquad - \underbrace{\rateISHtoH ISH\locagerisktime}_{\text{$ISH$ to $HR$ and $HD$}} \tag{C5} \\[1.5em]
 \frac{dIA\locagerisktime}{dt} &amp;= \underbrace{\rateEtoI \propIA E\locagerisktime}_{\text{$E$ to $IA$}} 
 - \underbrace{\rateIAtoR IA\locagerisktime}_{\text{$IA$ to $R$}} \tag{C6} \\[1.5em]
-\frac{dHR\locagerisktime}{dt} &amp;= \underbrace{\left(1-\frac{\pi^D_{a, r}}{1 + \LambdaDlocagerisktime}\right) \rateISHtoH ISH\locagerisktime}_{\text{$ISH$ to $HR$}} - \underbrace{\rateHRtoR HR\locagerisktime}_{\text{$HR$ to $R$}} \tag{C7} \\[1.5em]
-\frac{dHD\locagerisktime}{dt} &amp;= \underbrace{\frac{\pi^D_{a, r} \rateISHtoH ISH\locagerisktime}{1 + \LambdaDlocagerisktime}}_{\text{$ISH$ to $HD$}} - \underbrace{\rateHDtoD HD\locagerisktime}_{\text{$HD$ to $D$}} \tag{C8} \\[1.5em]
+\frac{dHR\locagerisktime}{dt} &amp;= \underbrace{\left(1-\frac{\pi^D_{a, r}}{1 + \LambdaDlocagerisktime} (1 - K^D_{V,a,r} \cdot MV_{a,r}\locationell(t)) \right) \rateISHtoH ISH\locagerisktime}_{\text{$ISH$ to $HR$}} 
+\\ &amp; \qquad \qquad - \underbrace{\rateHRtoR HR\locagerisktime}_{\text{$HR$ to $R$}} \tag{C7} \\[1.5em]
+\frac{dHD\locagerisktime}{dt} &amp;= \underbrace{\frac{\pi^D_{a, r} }{1 + \LambdaDlocagerisktime} (1 - K^D_{V,a,r} \cdot MV_{a,r}\locationell(t)) \cdot \rateISHtoH ISH\locagerisktime}_{\text{$ISH$ to $HD$}} 
+\\ &amp; \qquad \qquad - \underbrace{\rateHDtoD HD\locagerisktime}_{\text{$HD$ to $D$}} \tag{C8} \\[1.5em]
 \frac{dR\locagerisktime}{dt} &amp;= \underbrace{\rateISRtoR ISR\locagerisktime}_{\text{$ISR$ to $R$}} + \underbrace{\rateIAtoR IA\locagerisktime}_{\text{$IA$ to $R$}} + \underbrace{\rateHRtoR HR\locagerisktime}_{\text{$HR$ to $R$}}
 - \underbrace{\rateRtoS R\locagerisktime}_{\text{$R$ to $S$}} \tag{C9} \\[1.5em]
 \frac{dD\locagerisktime}{dt} &amp;= \underbrace{\rateHDtoD HD\locagerisktime}_{\text{$HD$ to $D$}}. \tag{C10}
@@ -982,7 +1004,7 @@ D\locagerisk(t + \Delta t) &amp;= D_{a, r}\locationell(t) + \underbrace{\jointtv
 <p>We make the important note that the flu model's discretized stochastic implementation can be generalized to models with different structures. More broadly, we let <span class="arithmatex">\(\boldsymbol{\mathcal C}(t)\)</span> be a model's set of epidemiological compartments, <span class="arithmatex">\(\boldsymbol{\mathcal M}(t)\)</span> its set of aggregate epidemiological metrics, and <span class="arithmatex">\(\boldsymbol{S (t)}\)</span> its set of schedule-dependent (time-dependent) deterministic values. Then the above formulation still holds.</p>
 <p>In fact, in our code, we model <span class="arithmatex">\(\boldsymbol{\mathcal C(t)}\)</span> using an <code>Compartment</code> class, <span class="arithmatex">\(\boldsymbol{\mathcal M}(t)\)</span> using an <code>EpiMetric</code> class, and <span class="arithmatex">\(\boldsymbol{\mathcal S(t)}\)</span> using a <code>Schedule</code> class. We handle stochastic transitions using <code>TransitionVariable</code> and <code>TransitionVariableGroup</code> classes. These classes form some of the building blocks of the base model code. </p>
 <blockquote>
-<p>Updated 2/19/2026. Documentation written by LP and updated by Rémy Pasco, mathematical notation by LP (advised by Lauren Meyers and Dave Morton, edited by Susan Ptak, Meyers Lab, and Shiyuan Liang), travel model conceptualized by Rémy and Susan Ptak, immunity formulation by Anass Bouchnita.</p>
+<p>Updated 8/31/2026. Documentation written by LP and updated by Rémy Pasco, mathematical notation by LP (advised by Lauren Meyers and Dave Morton, edited by Susan Ptak, Meyers Lab, and Shiyuan Liang), travel model conceptualized by Rémy and Susan Ptak, immunity formulation by Anass Bouchnita.</p>
 </blockquote>
 
 
