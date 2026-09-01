@@ -86,7 +86,7 @@ where
 
 - $\rateRtoS$: rate at which recovered individuals become susceptible, so that $1/\rateRtoS$ is the average number of days a person is totally immune from reinfection until being susceptible again.
 - $V\locationell\agerisktime$: proportion of individuals residing in location $\ell \in \mathcal L$ in age-risk group $a$, $r$ who receive vaccines at time $t$.
-- $o$, $o_v$: positive constants modeling the saturation of antibody production in individuals who have infection-induced immunity and vaccination-induced immunity, respectively.
+- $o$: positive constants modeling the saturation of antibody production in individuals who have infection-induced immunity.
 - $\delta$: number of days after dose for vaccine to become effective.
 - $w$: rate at which infection-induced immunity wanes.
 - $w_V$: rate at which vaccine-induced immunity wanes.
@@ -102,7 +102,7 @@ Note that the following are all $\numagegroups \times \numriskgroups$ matrices:
 - **$\boldsymbol{K}^I_{V}$**: vaccine-induced reduction in infection risk.
 - **$\boldsymbol{K}^H_{V}$**: vaccine-induced reduction in hospitalization risk.
 - **$\boldsymbol{K}^D_{V}$**: vaccine-induced reduction in death risk.
-- **$\boldsymbol{M}\locationell_{V}(t)$**: vaccine-induced population-level immunity in location $\ell \in \mathcal L$.
+- **$\boldsymbol{MV}\locationell(t)$**: vaccine-induced population-level immunity in location $\ell \in \mathcal L$.
 
 To simplify notation, we have the following terms that characterize the effect of population-level infection-induced immunities for a given subpopulation $\ell$, age $a$, and risk $r$:
 
@@ -117,7 +117,7 @@ where $\boldsymbol{1}_{\lvert \mathcal L \rvert \times 1}$ is an $\lvert \mathca
 The vaccine-induced reductions in risk $\boldsymbol{K}^I_{V}$, $\boldsymbol{K}^H_{V}$, and $\boldsymbol{K}^D_{V}$ are calculated based on reported vaccine effectiveness over an entire season to take into account waning:
 
 \begin{align*}
-K^{X}_{V} &= \frac{w_V \cdot T \cdot VE^{X}_{\text{season}}}{(1 - e^{-w_V}) \sum_{\tau=t_0}^{T-1} \frac{\sum_{u = t_0}^{\tau} p_{\text{prot}}(u) e^{-w_V (\tau - u)}}{\sum_{u = t_0}^{\tau} p_{\text{prot}}(u)}}
+K^{X}_{V} &= \frac{w_V \cdot T \cdot VE^{X}_{\text{season}}}{(1 - e^{-w_V}) \sum_{\tau=t_0}^{T-1} \frac{\sum_{u = t_0}^{\tau} p_{\text{prot}}(u) e^{-w_V (\tau - u)}}{\sum_{u = t_0}^{\tau} p_{\text{prot}}(u)}} \tag{K1}
 \end{align*}
 
 where
@@ -125,7 +125,7 @@ where
 - $X \in \{ I, H, D\}$.
 - $VE^{X}_{\text{season}}$: reported seasonal average vaccine effectiveness.
 - $T$: length of season in days.
-- $\tau$: first day an individual is protected through vaccination (first vaccination date plus vaccine effectiveness delay $\delta$).
+- $t_0$: first day an individual is protected through vaccination (first vaccination date plus vaccine effectiveness delay $\delta$).
 - $p_{\text{prot}}(u)$: proportion of all vaccinated individuals who become protected on day $u$.
 
 If vaccine effectiveness does not wane ($w_V = 0$) we simply have $K^{X}_{V} = VE^{X}_{\text{season}}$.  
