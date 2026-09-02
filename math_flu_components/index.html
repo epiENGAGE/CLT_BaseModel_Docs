@@ -740,10 +740,10 @@
 <ul>
 <li><span class="arithmatex">\(\rateRtoS\)</span>: rate at which recovered individuals become susceptible, so that <span class="arithmatex">\(1/\rateRtoS\)</span> is the average number of days a person is totally immune from reinfection until being susceptible again.</li>
 <li><span class="arithmatex">\(V\locationell\agerisktime\)</span>: proportion of individuals residing in location <span class="arithmatex">\(\ell \in \mathcal L\)</span> in age-risk group <span class="arithmatex">\(a\)</span>, <span class="arithmatex">\(r\)</span> who receive vaccines at time <span class="arithmatex">\(t\)</span>.</li>
-<li><span class="arithmatex">\(o\)</span>: positive constants modeling the saturation of antibody production in individuals who have infection-induced immunity.</li>
+<li><span class="arithmatex">\(o\)</span>: positive constant modeling the saturation of antibody production in individuals who have infection-induced immunity.</li>
 <li><span class="arithmatex">\(\delta\)</span>: number of days after dose for vaccine to become effective.</li>
 <li><span class="arithmatex">\(w\)</span>: rate at which infection-induced immunity wanes.</li>
-<li><span class="arithmatex">\(w_V\)</span>: rate at which vaccine-induced immunity wanes.</li>
+<li><span class="arithmatex">\(w_v\)</span>: rate at which vaccine-induced immunity wanes.</li>
 </ul>
 <h3 id="compartment-equations">Compartment equations</h3>
 <p>Note that the following are all <span class="arithmatex">\(\numagegroups \times \numriskgroups\)</span> matrices:</p>
@@ -766,7 +766,7 @@
 <p>where <span class="arithmatex">\(\boldsymbol{1}_{\lvert \mathcal L \rvert \times 1}\)</span> is an <span class="arithmatex">\(\lvert \mathcal L \rvert \times 1\)</span> vector of <span class="arithmatex">\(1\)</span>'s and the fraction notation indicates element-wise division. </p>
 <p>The vaccine-induced reductions in risk <span class="arithmatex">\(\boldsymbol{K}^I_{V}\)</span>, <span class="arithmatex">\(\boldsymbol{K}^H_{V}\)</span>, and <span class="arithmatex">\(\boldsymbol{K}^D_{V}\)</span> are calculated based on reported vaccine effectiveness over an entire season to take into account waning:</p>
 <div class="arithmatex">\[\begin{align*}
-K^{X}_{V} &amp;= \frac{w_V \cdot T \cdot VE^{X}_{\text{season}}}{(1 - e^{-w_V}) \sum_{\tau=t_0}^{T-1} \frac{\sum_{u = t_0}^{\tau} p_{\text{prot}}(u) e^{-w_V (\tau - u)}}{\sum_{u = t_0}^{\tau} p_{\text{prot}}(u)}} \tag{K1}
+K^{X}_{V} &amp;= \frac{w_v \cdot T \cdot VE^{X}_{\text{season}}}{(1 - e^{-w_v}) \sum_{\tau=t_0}^{T-1} \frac{\sum_{u = t_0}^{\tau} p_{\text{prot}}(u) e^{-w_v (\tau - u)}}{\sum_{u = t_0}^{\tau} p_{\text{prot}}(u)}} \tag{K1}
 \end{align*}\]</div>
 <p>where</p>
 <ul>
@@ -776,7 +776,7 @@ K^{X}_{V} &amp;= \frac{w_V \cdot T \cdot VE^{X}_{\text{season}}}{(1 - e^{-w_V}) 
 <li><span class="arithmatex">\(t_0\)</span>: first day an individual is protected through vaccination (first vaccination date plus vaccine effectiveness delay <span class="arithmatex">\(\delta\)</span>).</li>
 <li><span class="arithmatex">\(p_{\text{prot}}(u)\)</span>: proportion of all vaccinated individuals who become protected on day <span class="arithmatex">\(u\)</span>.</li>
 </ul>
-<p>If vaccine effectiveness does not wane (<span class="arithmatex">\(w_V = 0\)</span>) we simply have <span class="arithmatex">\(K^{X}_{V} = VE^{X}_{\text{season}}\)</span>.<br />
+<p>If vaccine effectiveness does not wane (<span class="arithmatex">\(w_v = 0\)</span>) we simply have <span class="arithmatex">\(K^{X}_{V} = VE^{X}_{\text{season}}\)</span>.<br />
 <br></p>
 <p>For each <span class="arithmatex">\(\ell \in \mathcal L\)</span>, <span class="arithmatex">\(a \in \agegroups\)</span>, <span class="arithmatex">\(r \in \riskgroups\)</span>, we have the following equations that characterize transitions between compartments:</p>
 <div class="arithmatex">\[\begin{align}
